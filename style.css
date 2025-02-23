@@ -4,7 +4,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2em;
 }
 
 .icon-200 {
@@ -14,4 +13,13 @@
 .temp-text {
     font-size: 4em;
     font-weight: bold;
+}
+
+.cell-end {
+    text-align: right;
+}
+
+td {
+    width: calc(100% / 3);
+    text-align: center;
 }

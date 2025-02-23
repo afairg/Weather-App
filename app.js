@@ -30,7 +30,7 @@ function displayWeatherIcon(strWeatherData) {
     const strWeatherCode = strWeatherData.weather_code;
     // Clear weather
     if (strWeatherCode == '0') {
-        strWeatherInfo.innerHTML = '<h2 class="text-center">Clear Skies</h2>';
+        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Clear Skies</h2>';
         if (strWeatherData.is_day == '1') {
             weatherIconContainer.innerHTML = '<i class="bi bi-sun icon-200"></i>';
         }
@@ -40,7 +40,7 @@ function displayWeatherIcon(strWeatherData) {
     }
     // Partly cloudy weather
     else if (strWeatherCode == '1' || strWeatherCode == '2') {
-        strWeatherInfo.innerHTML = '<h2 class="text-center">Partly Cloudy</h2>';
+        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Partly Cloudy</h2>';
         if (strWeatherData.is_day == '1') {
             weatherIconContainer.innerHTML = '<i class="bi bi-cloud-sun icon-200"></i>';
         }
@@ -50,14 +50,14 @@ function displayWeatherIcon(strWeatherData) {
     }
     // Cloudy weather
     else if (strWeatherCode == '3') {
-        strWeatherInfo.innerHTML = '<h2 class="text-center">Cloudy</h2>';
+        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Cloudy</h2>';
         weatherIconContainer.innerHTML = '<i class="bi bi-cloud icon-200"></i>';
     }
     //Rainy weather
     else if (strWeatherCode == '51' || strWeatherCode == '53' || strWeatherCode == '55' || strWeatherCode == '61' || strWeatherCode == '63' 
         || strWeatherCode == '65' || strWeatherCode == '80' || strWeatherCode == '81' || strWeatherCode == '82'
     ) {
-        strWeatherInfo.innerHTML = '<h2 class="text-center">Rain</h2>';
+        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Rain</h2>';
         weatherIconContainer.innerHTML = '<i class="bi bi-cloud-rain icon-200"></i>';
     }
     else {
@@ -73,11 +73,35 @@ async function displayWeatherInfo() {
     const strDailyWeather = strWeatherData.daily;
     const strTemperature = parseInt(strCurrentWeather.temperature_2m);
     const strHumidity = strCurrentWeather.relative_humidity_2m;
-    const strApparentTemperature = strCurrentWeather.apparent_temperature;
+    const strApparentTemperature = parseInt(strCurrentWeather.apparent_temperature);
+    const strHighTemperature = parseInt(strDailyWeather.temperature_2m_max);
+    const strLowTemperature = parseInt(strDailyWeather.temperature_2m_min);
+    const strChancePrecipitation = parseInt(strDailyWeather.precipitation_probability_max);
+    const strCloudCover = parseInt(strCurrentWeather.cloud_cover);
     displayWeatherIcon(strWeatherData.current);
 
     // Display the current temperature
-    strWeatherInfo.innerHTML += `<p class="text-center temp-text">${strTemperature}°F</p>`;
+    strWeatherInfo.innerHTML += `<p class="text-center temp-text mb-0">${strTemperature}°F</p>`;
+    strWeatherInfo.innerHTML += `<div class="d-flex justify-content-around"><h5>High: ${strHighTemperature}°F</h5><h5>Low: ${strLowTemperature}°F</h5><h5 class="text-center">Feels like: ${strApparentTemperature}°F</h5></div>`;
+    strWeatherInfo.innerHTML += `<table class="table mt-4" id="weatherTable" aria-label="Weather Information">
+                                    <tbody>
+                                        <tr>
+                                            <td>Humidity</td>
+                                            <td><i class="bi bi-moisture"></i></td>
+                                            <td>${strHumidity}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Chance of Precipitation</td>
+                                            <td><i class="bi bi-droplet"></i></td>
+                                            <td>${strChancePrecipitation}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cloud Cover</td>
+                                            <td><i class="bi bi-clouds"></i></td>
+                                            <td>${strCloudCover}%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>`;
 }
 
 displayWeatherInfo();
