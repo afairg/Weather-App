@@ -1,0 +1,17 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2em;
+}
+
+.icon-200 {
+    font-size: 200px;
+}
+
+.temp-text {
+    font-size: 2em;
+    font-weight: bold;
+}
