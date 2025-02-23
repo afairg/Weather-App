@@ -1,5 +1,6 @@
 const weatherIconContainer = document.querySelector('#weatherIconContainerDiv');
-const strWeatherInfo = document.querySelector('#txtWeatherDescriptor');
+const strWeatherDescriptor = document.querySelector('#txtWeatherDescriptor');
+const strWeatherInfo = document.querySelector('#WeatherInfoDiv')
 
 // Function to retrieve and parse weather information from the Open-Meteo API
 async function getWeatherInfo() {
@@ -24,9 +25,8 @@ async function getWeatherInfo() {
 }
 
 
-// Function to display the appropriate weather icon based on the weather code
-async function getWeatherIcon() {
-    const strWeatherData = (await getWeatherInfo()).current;
+// Function to display the appropriate weather icon and descriptor based on the weather code
+function displayWeatherIcon(strWeatherData) {
     const strWeatherCode = strWeatherData.weather_code;
     // Clear weather
     if (strWeatherCode == '0') {
@@ -65,4 +65,19 @@ async function getWeatherIcon() {
     }
 }
 
-getWeatherIcon();
+
+// Function to display weather information
+async function displayWeatherInfo() {
+    const strWeatherData = await getWeatherInfo();
+    const strCurrentWeather = strWeatherData.current;
+    const strDailyWeather = strWeatherData.daily;
+    const strTemperature = parseInt(strCurrentWeather.temperature_2m);
+    const strHumidity = strCurrentWeather.relative_humidity_2m;
+    const strApparentTemperature = strCurrentWeather.apparent_temperature;
+    displayWeatherIcon(strWeatherData.current);
+
+    // Display the current temperature
+    strWeatherInfo.innerHTML += `<p class="text-center temp-text">${strTemperature}°F</p>`;
+}
+
+displayWeatherInfo();
