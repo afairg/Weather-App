@@ -79,54 +79,54 @@ function displayWeatherImages(strWeatherData) {
     if (strWeatherCode == '0') {
         strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Clear Skies</h2>';
         if (strWeatherData.is_day == '1') {
-            weatherIconContainer.innerHTML = '<i class="bi bi-sun icon-200"></i>';
+            weatherIconContainer.innerHTML = '<i class="bi bi-sun icon-150"></i>';
         }
         else {
-            weatherIconContainer.innerHTML = '<i class="bi bi-moon icon-200"></i>';
+            weatherIconContainer.innerHTML = '<i class="bi bi-moon icon-150"></i>';
         }
     }
     // Partly cloudy weather
     else if (strWeatherCode == '1' || strWeatherCode == '2') {
         strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Partly Cloudy</h2>';
         if (strWeatherData.is_day == '1') {
-            weatherIconContainer.innerHTML = '<i class="bi bi-cloud-sun icon-200"></i>';
+            weatherIconContainer.innerHTML = '<i class="bi bi-cloud-sun icon-150"></i>';
         }
         else {
-            weatherIconContainer.innerHTML = '<i class="bi bi-cloud-moon icon-200"></i>';
+            weatherIconContainer.innerHTML = '<i class="bi bi-cloud-moon icon-150"></i>';
         }
     }
     // Cloudy weather
     else if (strWeatherCode == '3') {
         strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Cloudy</h2>';
-        weatherIconContainer.innerHTML = '<i class="bi bi-cloud icon-200"></i>';
+        weatherIconContainer.innerHTML = '<i class="bi bi-cloud icon-150"></i>';
     }
     // Foggy weather
     else if (strWeatherCode == '45' || strWeatherCode == '48') {
         strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Fog</h2>';
-        weatherIconContainer.innerHTML = '<i class="bi bi-cloud-fog icon-200"></i>';
+        weatherIconContainer.innerHTML = '<i class="bi bi-cloud-fog icon-150"></i>';
     }
     //Rainy weather
     else if (strWeatherCode == '51' || strWeatherCode == '53' || strWeatherCode == '55' || strWeatherCode == '61' || strWeatherCode == '63' 
         || strWeatherCode == '65' || strWeatherCode == '80' || strWeatherCode == '81' || strWeatherCode == '82'
     ) {
         strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Rain</h2>';
-        weatherIconContainer.innerHTML = '<i class="bi bi-cloud-rain icon-200"></i>';
+        weatherIconContainer.innerHTML = '<i class="bi bi-cloud-rain icon-150"></i>';
     }
     //Stormy weather
     else if (strWeatherCode == '95') {
         strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Thunderstorms</h2>';
-        weatherIconContainer.innerHTML = '<i class="bi bi-cloud-lightning-rain icon-200"></i>';
+        weatherIconContainer.innerHTML = '<i class="bi bi-cloud-lightning-rain icon-150"></i>';
     }
     //Snowy weather
     else if (strWeatherCode == '71' || strWeatherCode == '73' || strWeatherCode == '75' || strWeatherCode == '77' || strWeatherCode == '85' 
         || strWeatherCode == '86'
     ) {
         strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Snow</h2>';
-        weatherIconContainer.innerHTML = '<i class="bi bi-cloud-snow icon-200"></i>';
+        weatherIconContainer.innerHTML = '<i class="bi bi-cloud-snow icon-150"></i>';
     }
     // "Unknown" weather
     else {
-        weatherIconContainer.innerHTML = '<i class="bi bi-cloud-slash icon-200"></i>';
+        weatherIconContainer.innerHTML = '<i class="bi bi-cloud-slash icon-150"></i>';
     }
 }
 
@@ -151,7 +151,11 @@ async function displayWeatherInfo() {
     strCityState.innerText = `${strCity}, ${strState}`;
     // Display the current weather conditions
     strWeatherInfo.innerHTML += `<p class="text-center temp-text mb-0">${strTemperature}°F</p>`;
-    strWeatherInfo.innerHTML += `<div class="d-flex justify-content-around"><h5>High: ${strHighTemperature}°F</h5><h5>Low: ${strLowTemperature}°F</h5><h5 class="text-center">Feels like: ${strApparentTemperature}°F</h5></div>`;
+    strWeatherInfo.innerHTML += `<div class="d-flex justify-content-center">
+                                    <h5 class="flex-fill text-center">High: ${strHighTemperature}°F</h5>
+                                    <h5 class="flex-fill text-center">Low: ${strLowTemperature}°F</h5>
+                                    <h5 class="flex-fill text-center">Feels like: ${strApparentTemperature}°F</h5>
+                                </div>`;
     strWeatherInfo.innerHTML += `<table class="table mt-4" id="weatherTable" aria-label="Weather Information Table">
                                     <tbody>
                                         <tr>
