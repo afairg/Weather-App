@@ -10,13 +10,9 @@
     font-size: 150px;
 }
 
-.temp-text {
+.temperature-text {
     font-size: 4em;
     font-weight: bold;
-}
-
-.cell-end {
-    text-align: right;
 }
 
 td {

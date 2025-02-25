@@ -1,25 +1,25 @@
+// Global variables
 const weatherIconContainer = document.querySelector('#weatherIconContainerDiv');
 const strWeatherDescriptor = document.querySelector('#txtWeatherDescriptor');
-const strWeatherInfo = document.querySelector('#weatherInfoDiv');
+const weatherInfoDiv = document.querySelector('#divWeatherInfo');
 const strCityState = document.querySelector('#txtCityState');
 
 
 // Function to retrieve the user's location using OpenStreetMap's Nominatim API
-async function getLocation() {
+function getLocation() {
     return new Promise((resolve, reject) => {
+        // Check if geolocation is supported by the browser
         if (navigator.geolocation) {
+            // Retrieve the user's current position
             navigator.geolocation.getCurrentPosition(async function (position) {
                 try {
                     const strLat = position.coords.latitude.toString();
                     const strLong = position.coords.longitude.toString();
                     let url = `https://nominatim.openstreetmap.org/reverse?lat=${strLat}&lon=${strLong}&format=json`;
-
                     let objResponse = await fetch(url);
                     let objData = await objResponse.json();
-                    let strCity = objData.address.city || objData.address.town || objData.address.village || "Unknown Location";
-                    let strState = objData.address.state;
-
-                    console.log("Location Data:", objData);
+                    const strCity = objData.address.city || objData.address.town || objData.address.village || "Unknown Location";
+                    const strState = objData.address.state;
 
                     resolve({
                         lat: strLat,
@@ -27,12 +27,13 @@ async function getLocation() {
                         city: strCity,
                         state: strState
                     });
-
+                // Error case, location data could not be retrieved from the API
                 } catch (error) {
                     console.error("Error retrieving city name:", error);
                     reject(error);
                 }
             },
+            // Error case, location data could not be retrieved from the browser
             (error) => {
                 console.error("Error retrieving user location data:", error);
                 reject(error);
@@ -44,6 +45,7 @@ async function getLocation() {
     });
 }
 
+
 // Function to retrieve and parse weather information from the Open-Meteo API
 async function getWeatherInfo() {
     const objLocation = await getLocation();
@@ -51,7 +53,6 @@ async function getWeatherInfo() {
     const strLong = objLocation.long;
     const strCity = objLocation.city;
     const strState = objLocation.state;
-    console.log("objLocation: ", objLocation);
     const strResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${strLat}&longitude=${strLong}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,cloud_cover&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FChicago&forecast_days=1`);
     const strWeatherData = await strResponse.json();
     // Error case, data could not be retrieved
@@ -77,7 +78,7 @@ function displayWeatherImages(strWeatherData) {
     const strWeatherCode = strWeatherData.weather_code;
     // Clear weather
     if (strWeatherCode == '0') {
-        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Clear Skies</h2>';
+        weatherInfoDiv.innerHTML = '<h2 class="text-center mb-0">Clear Skies</h2>';
         if (strWeatherData.is_day == '1') {
             weatherIconContainer.innerHTML = '<i class="bi bi-sun icon-150"></i>';
         }
@@ -87,7 +88,7 @@ function displayWeatherImages(strWeatherData) {
     }
     // Partly cloudy weather
     else if (strWeatherCode == '1' || strWeatherCode == '2') {
-        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Partly Cloudy</h2>';
+        weatherInfoDiv.innerHTML = '<h2 class="text-center mb-0">Partly Cloudy</h2>';
         if (strWeatherData.is_day == '1') {
             weatherIconContainer.innerHTML = '<i class="bi bi-cloud-sun icon-150"></i>';
         }
@@ -97,31 +98,31 @@ function displayWeatherImages(strWeatherData) {
     }
     // Cloudy weather
     else if (strWeatherCode == '3') {
-        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Cloudy</h2>';
+        weatherInfoDiv.innerHTML = '<h2 class="text-center mb-0">Cloudy</h2>';
         weatherIconContainer.innerHTML = '<i class="bi bi-cloud icon-150"></i>';
     }
     // Foggy weather
     else if (strWeatherCode == '45' || strWeatherCode == '48') {
-        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Fog</h2>';
+        weatherInfoDiv.innerHTML = '<h2 class="text-center mb-0">Fog</h2>';
         weatherIconContainer.innerHTML = '<i class="bi bi-cloud-fog icon-150"></i>';
     }
     //Rainy weather
     else if (strWeatherCode == '51' || strWeatherCode == '53' || strWeatherCode == '55' || strWeatherCode == '61' || strWeatherCode == '63' 
         || strWeatherCode == '65' || strWeatherCode == '80' || strWeatherCode == '81' || strWeatherCode == '82'
     ) {
-        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Rain</h2>';
+        weatherInfoDiv.innerHTML = '<h2 class="text-center mb-0">Rain</h2>';
         weatherIconContainer.innerHTML = '<i class="bi bi-cloud-rain icon-150"></i>';
     }
     //Stormy weather
     else if (strWeatherCode == '95') {
-        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Thunderstorms</h2>';
+        weatherInfoDiv.innerHTML = '<h2 class="text-center mb-0">Thunderstorms</h2>';
         weatherIconContainer.innerHTML = '<i class="bi bi-cloud-lightning-rain icon-150"></i>';
     }
     //Snowy weather
     else if (strWeatherCode == '71' || strWeatherCode == '73' || strWeatherCode == '75' || strWeatherCode == '77' || strWeatherCode == '85' 
         || strWeatherCode == '86'
     ) {
-        strWeatherInfo.innerHTML = '<h2 class="text-center mb-0">Snow</h2>';
+        weatherInfoDiv.innerHTML = '<h2 class="text-center mb-0">Snow</h2>';
         weatherIconContainer.innerHTML = '<i class="bi bi-cloud-snow icon-150"></i>';
     }
     // "Unknown" weather
@@ -146,17 +147,17 @@ async function displayWeatherInfo() {
     const strLowTemperature = parseInt(strDailyWeather.temperature_2m_min);
     const strChancePrecipitation = parseInt(strDailyWeather.precipitation_probability_max);
     const strCloudCover = parseInt(strCurrentWeather.cloud_cover);
-    displayWeatherImages(strWeatherData.current);
 
+    displayWeatherImages(strWeatherData.current);
     strCityState.innerText = `${strCity}, ${strState}`;
     // Display the current weather conditions
-    strWeatherInfo.innerHTML += `<p class="text-center temp-text mb-0">${strTemperature}°F</p>`;
-    strWeatherInfo.innerHTML += `<div class="d-flex justify-content-center">
+    weatherInfoDiv.innerHTML += `<p class="text-center temperature-text mb-0">${strTemperature}°F</p>`;
+    weatherInfoDiv.innerHTML += `<div class="d-flex justify-content-center">
                                     <h5 class="flex-fill text-center">High: ${strHighTemperature}°F</h5>
                                     <h5 class="flex-fill text-center">Low: ${strLowTemperature}°F</h5>
                                     <h5 class="flex-fill text-center">Feels like: ${strApparentTemperature}°F</h5>
                                 </div>`;
-    strWeatherInfo.innerHTML += `<table class="table mt-4" id="weatherTable" aria-label="Weather Information Table">
+    weatherInfoDiv.innerHTML += `<table class="table mt-4" id="weatherTable" aria-label="Weather Information Table">
                                     <tbody>
                                         <tr>
                                             <td>Humidity</td>
@@ -178,3 +179,5 @@ async function displayWeatherInfo() {
 }
 
 displayWeatherInfo();
+
+// Generative Artificial Intelligence was used to make the getWeatherInfo function return a resolved or rejected promise.
