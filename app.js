@@ -35,12 +35,12 @@ function getLocation() {
             },
             // Error case, location data could not be retrieved from the browser or user denied location access
             (error) => {
-                console.error("Error retrieving user location data:", error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
                     text: 'An error occurred while trying to retrieve your location.'
-                })
+                });
+                console.error("Error retrieving user location data:", error);
                 reject(error);
             });
         } else {
