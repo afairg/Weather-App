@@ -184,4 +184,4 @@ async function displayWeatherInfo() {
 
 displayWeatherInfo();
 
-// Generative Artificial Intelligence was used to make the getWeatherInfo function return a resolved or rejected promise.
+// Generative Artificial Intelligence (ChatGPT) was used to make the getWeatherInfo function return a resolved or rejected promise.
