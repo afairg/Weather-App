@@ -135,7 +135,6 @@ function displayWeatherImages(strWeatherData) {
 // Function to display weather information
 async function displayWeatherInfo() {
     const strWeatherData = await getWeatherInfo();
-    console.log("getWeatherInfo: ", strWeatherData);
     const strCurrentWeather = strWeatherData.current;
     const strDailyWeather = strWeatherData.daily;
     const strCity = strWeatherData.city;
